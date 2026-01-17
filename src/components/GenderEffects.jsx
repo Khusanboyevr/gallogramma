@@ -44,9 +44,9 @@ const Heart = ({ pos, speed, scale, color }) => {
 };
 
 /**
- * BOY EFFECT: Energy sparkles / Lightning (Enhanced Density)
+ * BOY EFFECT: Energy sparkles / Lightning (Enhanced Densityaaasdqq)
  */
-export const LightningAura = ({ count = 100, color = "#00f2ff" }) => {
+export const LightningAura = ({ count = 100, color = "#60f4fcff" }) => {
     return (
         <Sparkles
             count={count}
