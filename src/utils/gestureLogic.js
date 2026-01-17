@@ -10,13 +10,18 @@ export const detectGesture = (landmarks) => {
     if (!landmarks || landmarks.length < 21) return 'NONE';
 
     const wrist = getPos(landmarks[0]);
+    const indexBase = getPos(landmarks[5]);
+    const middleBase = getPos(landmarks[9]);
+
+    // Hand size reference (distance between wrist and middle finger base)
+    const handScale = dist(wrist, middleBase);
 
     // Standard Finger Extensions
     const isExtended = (tipIdx, midIdx) => {
         const tip = getPos(landmarks[tipIdx]);
         const mid = getPos(landmarks[midIdx]);
-        // Distance from wrist is the most orientation-agnostic check
-        return dist(tip, wrist) > dist(mid, wrist);
+        // Distance from wrist or relative to hand scale
+        return dist(tip, wrist) > dist(mid, wrist) * 1.1;
     };
 
     const indexExtended = isExtended(8, 6);
@@ -24,10 +29,10 @@ export const detectGesture = (landmarks) => {
     const ringExtended = isExtended(16, 14);
     const pinkyExtended = isExtended(20, 18);
 
-    // Thumb: Simple check against index base
+    // Thumb: More robust check relative to hand scale
     const thumbTip = getPos(landmarks[4]);
-    const indexBase = getPos(landmarks[5]);
-    const thumbExtended = dist(thumbTip, indexBase) > 60;
+    // Thumb is extended if it's far from the index base relative to hand scale
+    const thumbExtended = dist(thumbTip, indexBase) > handScale * 0.45;
 
     let fingerCount = 0;
     if (thumbExtended) fingerCount++;
@@ -38,7 +43,7 @@ export const detectGesture = (landmarks) => {
 
     // Pinch: Special gesture
     const thumbIndexDist = dist(thumbTip, getPos(landmarks[8]));
-    if (thumbIndexDist < 30) return 'PINCH';
+    if (thumbIndexDist < handScale * 0.2) return 'PINCH';
 
     // Map counts to strings
     return String(fingerCount);

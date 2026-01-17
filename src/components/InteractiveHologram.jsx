@@ -9,6 +9,9 @@ const InteractiveHologram = ({ handsData, gesture }) => {
     const groupRef = useRef();
     const pointsRef = useRef();
     const [currentColor, setCurrentColor] = useState('#00f2ff');
+    const [smoothGesture, setSmoothGesture] = useState(gesture);
+    const gestureCount = useRef({});
+    const GESTURE_THRESHOLD = 5; // Frames needed for a gesture to stick
 
     const rotationX = useRef(0);
     const rotationY = useRef(0);
@@ -115,7 +118,23 @@ const InteractiveHologram = ({ handsData, gesture }) => {
         if (!groupRef.current || !pointsRef.current) return;
 
         try {
-            const targetGesture = sampledGeometries[gesture] ? gesture : 'NONE';
+            // GESTURE SMOOTHING
+            const rawGesture = gesture || 'NONE';
+            gestureCount.current[rawGesture] = (gestureCount.current[rawGesture] || 0) + 1;
+
+            // If rawGesture is different from smoothGesture and has been detected enough times
+            if (rawGesture !== smoothGesture && gestureCount.current[rawGesture] > GESTURE_THRESHOLD) {
+                setSmoothGesture(rawGesture);
+                // Reset counts for all other gestures
+                Object.keys(gestureCount.current).forEach(g => {
+                    if (g !== rawGesture) gestureCount.current[g] = 0;
+                });
+            } else if (rawGesture === smoothGesture) {
+                // If it's already the same, keep incrementing or cap it
+                gestureCount.current[rawGesture] = Math.min(gestureCount.current[rawGesture], 20);
+            }
+
+            const targetGesture = sampledGeometries[smoothGesture] ? smoothGesture : 'NONE';
 
             if (handsData && handsData.length > 0) {
                 const kp = Array.isArray(handsData[0][9])
