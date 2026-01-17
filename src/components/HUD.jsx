@@ -9,6 +9,7 @@ const getPos = (kp) => {
 
 const HUD = ({ landmarks, activeGesture }) => {
     const [stableTracking, setStableTracking] = useState(false);
+    const [showInstructions, setShowInstructions] = useState(false);
     const isTracking = !!landmarks;
 
     useEffect(() => {
@@ -18,79 +19,101 @@ const HUD = ({ landmarks, activeGesture }) => {
         return () => clearTimeout(timeout);
     }, [isTracking]);
 
-    const stickers = [
-        { g: 'NONE', t: 'Kreml (Default)', icon: '🏰', gest: '✋', c: '#ff4444' },
-        { g: '0', t: 'Burj Xalifa', icon: '🏙️', gest: '✊ 0', c: '#00f2ff' },
-        { g: '2', t: 'Eyfel Minorasi', icon: '🗼', gest: '✌️ 2', c: '#ffea00' },
-        { g: '3', t: 'Toj Mahal', icon: '🏛️', gest: '🤟 3', c: '#ffffff' },
-        { g: '4', t: 'Kolossey', icon: '🏟️', gest: '🖖 4', c: '#ffa500' },
-        { g: '5', t: 'Ozodlik Haykali', icon: '🗽', gest: '🖐️ 5', c: '#40e0d0' }
-    ];
-
     return (
         <div className="hud-overlay" style={{ pointerEvents: 'none' }}>
             <div className="scanline" />
 
-            {/* PERSISTENT SIDE PANEL */}
-            <div style={{
-                position: 'absolute', left: '20px', top: '50%', transform: 'translateY(-50%)',
-                width: '160px', background: 'rgba(0,10,20,0.7)', backdropFilter: 'blur(10px)',
-                border: '1px solid rgba(0, 242, 255, 0.3)', borderRadius: '15px', padding: '15px',
-                display: 'flex', flexDirection: 'column', gap: '8px', pointerEvents: 'auto',
-                boxShadow: '0 0 20px rgba(0,0,0,0.5)', zIndex: 10
-            }}>
-                <div style={{ fontSize: '0.6rem', color: '#00f2ff', textAlign: 'center', opacity: 0.7, marginBottom: '5px' }}>Yo'riqnoma</div>
-                {stickers.map(s => {
-                    const isActive = activeGesture === s.g || (s.g === 'NONE' && (activeGesture === 'NONE' || activeGesture === '1'));
-                    return (
-                        <div key={s.g} style={{
-                            fontSize: '0.65rem', color: isActive ? s.c : 'white', opacity: isActive ? 1 : 0.5,
-                            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                            padding: '4px 0', borderBottom: '1px solid rgba(255,255,255,0.05)',
-                            transition: 'all 0.3s'
-                        }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                                <span style={{ fontSize: '0.9rem' }}>{s.icon}</span>
-                                <span>{s.t}</span>
-                            </div>
-                            <span style={{ fontSize: '0.8rem', opacity: 0.8 }}>{s.gest}</span>
-                        </div>
-                    );
-                })}
-                <div style={{ marginTop: '10px', fontSize: '0.5rem', opacity: 0.5, lineHeight: 1.4 }}>
-                    * Chap/o'ng - Rang
-                </div>
-                <div style={{
-                    marginTop: '10px', paddingTop: '8px',
-                    borderTop: '1px solid rgba(0, 242, 255, 0.2)',
-                    fontSize: '0.6rem', color: '#00f2ff', opacity: 0.8, letterSpacing: '1px'
-                }}>
-                    STATUS: {isTracking ? 'SYNCED' : 'OFFLINE'}
-                    <br />
-                    MODE: {activeGesture}
-                </div>
+            {/* YO'RIQNOMA BUTTON */}
+            <div style={{ position: 'absolute', top: '20px', right: '20px', pointerEvents: 'auto' }}>
+                <button
+                    onClick={() => setShowInstructions(!showInstructions)}
+                    className="glass-panel"
+                    style={{
+                        padding: '10px 15px',
+                        fontSize: '0.7rem',
+                        color: '#00f2ff',
+                        border: '1px solid rgba(0, 242, 255, 0.4)',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        background: 'rgba(0, 10, 20, 0.6)',
+                        boxShadow: '0 0 10px rgba(0, 242, 255, 0.2)'
+                    }}
+                >
+                    <HelpCircle size={14} />
+                    Yo'riqnoma
+                </button>
             </div>
+
+            {/* INSTRUCTION OVERLAY */}
+            {showInstructions && (
+                <div style={{
+                    position: 'absolute', inset: 0,
+                    background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(10px)',
+                    zIndex: 2000, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    pointerEvents: 'auto', padding: '20px'
+                }}>
+                    <div className="glass-panel" style={{
+                        width: '100%', maxWidth: '400px', padding: '30px',
+                        position: 'relative', border: '1px solid #00f2ff',
+                        textAlign: 'left', lineHeight: 1.6
+                    }}>
+                        <button
+                            onClick={() => setShowInstructions(false)}
+                            style={{ position: 'absolute', top: '15px', right: '15px', background: 'none', border: 'none', color: '#00f2ff', cursor: 'pointer' }}
+                        >
+                            <X size={20} />
+                        </button>
+
+                        <h2 style={{ color: '#00f2ff', marginBottom: '15px', fontSize: '1.2rem', textAlign: 'center' }}>INTERAKTIV BOSHQARUV</h2>
+
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', fontSize: '0.9rem' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                <span style={{ fontSize: '1.2rem' }}>↔️</span>
+                                <span>Qo'lni chap/o'ngga siljiting — Hologramma aylanadi</span>
+                            </div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                <span style={{ fontSize: '1.2rem' }}>✊</span>
+                                <span>Qo'lni yuming (fist) — Hologramma yaqinlashadi (Masshtab +)</span>
+                            </div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                <span style={{ fontSize: '1.2rem' }}>🖐️</span>
+                                <span>Qo'lni oching — Hologramma uzoqlashadi (Masshtab -)</span>
+                            </div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                <span style={{ fontSize: '1.2rem' }}>🎯</span>
+                                <span>Hologramma qo'lingizga bog'langan holda harakatlanadi</span>
+                            </div>
+                        </div>
+
+                        <div style={{ marginTop: '25px', fontSize: '0.7rem', textAlign: 'center', color: '#00f2ff', opacity: 0.6, borderTop: '1px solid rgba(0,242,255,0.2)', paddingTop: '15px' }}>
+                            GEN V4.0 NEURAL INTERFACE
+                        </div>
+                    </div>
+                </div>
+            )}
 
             {/* TOP BAR */}
             <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
-                <div className="glass-panel" style={{ padding: '8px 20px' }}>
+                <div className="glass-panel" style={{ padding: '8px 20px', marginTop: '20px' }}>
                     <div style={{ fontSize: '0.5rem', opacity: 0.6, textAlign: 'center' }}>HOLOGRAPHIC_OS</div>
                     <div className="glow-text" style={{ fontSize: '0.9rem', fontWeight: 'bold' }}>
-                        {activeGesture !== 'NONE' ? activeGesture : 'SEARCHING...'}
+                        {isTracking ? 'LINK STABLE' : 'SEARCHING...'}
                     </div>
                 </div>
             </div>
 
             {/* BOTTOM STATUS */}
-            <div style={{ position: 'absolute', bottom: '20px', left: '20px', right: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+            <div style={{ position: 'absolute', bottom: '20px', left: '20px', right: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '10px' }}>
                 <div className="glass-panel" style={{ minWidth: '150px' }}>
                     <div style={{ fontSize: '0.6rem', opacity: 0.8 }}>
-                        LINK: <span style={{ color: stableTracking ? '#00ff44' : '#ff4444' }}>{stableTracking ? 'STABLE' : 'SEARCHING...'}</span>
+                        NEURAL LINK: <span style={{ color: stableTracking ? '#00ff44' : '#ff4444' }}>{stableTracking ? 'ACTIVE' : 'OFFLINE'}</span>
                     </div>
                 </div>
                 <div className="glass-panel" style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
                     <Target size={14} color="#00f2ff" />
-                    <span style={{ fontSize: '0.6rem' }}>NEURAL v4.0</span>
+                    <span style={{ fontSize: '0.6rem' }}>GEN V4.0</span>
                 </div>
             </div>
         </div>

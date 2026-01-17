@@ -3,7 +3,6 @@ import HologramScene from "./components/HologramScene";
 import HUD from "./components/HUD";
 import { useHandTracking } from "./hooks/useHandTracking";
 import CameraCapture from "./components/CameraCapture";
-import { detectGender as senseGender } from "./utils/genderSensing";
 import NeuralBackground from "./components/NeuralBackground";
 
 function App() {
@@ -13,8 +12,7 @@ function App() {
     const startSession = (e) => {
         e.preventDefault();
         if (!session.name.trim()) return;
-        const detectedGender = senseGender(session.name);
-        setSession((prev) => ({ ...prev, started: true, gender: detectedGender }));
+        setSession((prev) => ({ ...prev, started: true }));
     };
 
     return (
@@ -194,7 +192,6 @@ function App() {
                         handsData={handsData}
                         gesture={gesture}
                         userName={session.name}
-                        gender={session.gender}
                     />
                     <HUD landmarks={handsData[0]} activeGesture={gesture} />
                 </>

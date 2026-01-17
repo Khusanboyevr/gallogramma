@@ -2,10 +2,9 @@ import React, { Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, PerspectiveCamera } from '@react-three/drei';
 import { Bloom, EffectComposer } from '@react-three/postprocessing';
-import HandSkeleton from './HandSkeleton';
-import InteractiveHologram from './InteractiveHologram';
+import NameHologram from './NameHologram';
 
-const HologramScene = ({ handsData, gesture, userName, gender }) => {
+const HologramScene = ({ handsData, gesture, userName }) => {
     return (
         <Canvas shadows dpr={[1, 2]}>
             <color attach="background" args={['#000']} />
@@ -17,9 +16,10 @@ const HologramScene = ({ handsData, gesture, userName, gender }) => {
             <pointLight position={[-10, -10, -10]} intensity={1.5} color="#ff00ff" />
 
             <Suspense fallback={null}>
-                <InteractiveHologram
+                <NameHologram
                     handsData={handsData}
                     gesture={gesture}
+                    userName={userName}
                 />
             </Suspense>
 
