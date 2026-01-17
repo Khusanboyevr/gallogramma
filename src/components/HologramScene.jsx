@@ -21,12 +21,6 @@ const HologramScene = ({ handsData, gesture, userName, gender }) => {
                     handsData={handsData}
                     gesture={gesture}
                 />
-                <HandSkeleton
-                    handsData={handsData}
-                    gesture={gesture}
-                    userName={userName}
-                    gender={gender}
-                />
             </Suspense>
 
             <EffectComposer disableNormalPass>

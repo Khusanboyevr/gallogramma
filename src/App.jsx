@@ -176,16 +176,17 @@ function App() {
                         muted
                         style={{
                             position: "absolute",
-                            bottom: "20px",
-                            right: "20px",
-                            width: "160px",
-                            height: "120px",
+                            bottom: "30px",
+                            right: "30px",
+                            width: "200px",
+                            height: "150px",
                             zIndex: 5,
-                            borderRadius: "8px",
-                            border: "1px solid rgba(0, 242, 255, 0.3)",
+                            borderRadius: "12px",
+                            border: "2px solid rgba(0, 242, 255, 0.5)",
                             display: "block",
                             objectFit: "cover",
-                            opacity: 0.5,
+                            opacity: 1, // Full opacity as requested
+                            boxShadow: "0 0 15px rgba(0, 242, 255, 0.3)"
                         }}
                     />
 

@@ -39,7 +39,11 @@ export const useHandTracking = (shouldStart) => {
                 });
                 if (videoRef.current && active) {
                     videoRef.current.srcObject = stream;
-                    videoRef.current.onloadedmetadata = () => videoRef.current.play();
+                    videoRef.current.onloadedmetadata = () => {
+                        if (videoRef.current && active) {
+                            videoRef.current.play().catch(e => console.warn("Camera play interrupted:", e));
+                        }
+                    };
                 }
             } catch (err) {
                 if (active) setError('Kameraga ruxsat berilmadi');
