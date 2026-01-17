@@ -4,6 +4,7 @@ import HUD from "./components/HUD";
 import { useHandTracking } from "./hooks/useHandTracking";
 import CameraCapture from "./components/CameraCapture";
 import { detectGender as senseGender } from "./utils/genderSensing";
+import NeuralBackground from "./components/NeuralBackground";
 
 function App() {
     const [session, setSession] = useState({ started: false, name: "", gender: "male" });
@@ -38,16 +39,17 @@ function App() {
                         flexDirection: "column",
                         alignItems: "center",
                         justifyContent: "center",
-                        background: "radial-gradient(circle, #001a1a 0%, #000 100%)",
+                        background: "transparent", // Changed from gradient to transparent
                         gap: "2rem",
                         padding: "20px",
                         textAlign: "center",
                         fontFamily: "'Courier New', Courier, monospace",
                     }}
                 >
+                    <NeuralBackground />
                     <div
                         className="glow-text"
-                        style={{ fontSize: "3rem", fontWeight: "bold", letterSpacing: "4px" }}
+                        style={{ position: "relative", zIndex: 1, fontSize: "3rem", fontWeight: "bold", letterSpacing: "4px" }}
                     >
                         HOLOGRAPHIC INTERFACE
                     </div>
@@ -55,6 +57,8 @@ function App() {
                     <form
                         onSubmit={startSession}
                         style={{
+                            position: "relative",
+                            zIndex: 1,
                             display: "flex",
                             flexDirection: "column",
                             gap: "1.5rem",
@@ -122,6 +126,7 @@ function App() {
                             bottom: "20px",
                             fontSize: "0.7rem",
                             color: "#333",
+                            zIndex: 1,
                         }}
                     >
                         COMPATIBLE WITH iOS • ANDROID • MAC • PC

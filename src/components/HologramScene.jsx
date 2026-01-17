@@ -3,6 +3,7 @@ import { Canvas } from '@react-three/fiber';
 import { OrbitControls, PerspectiveCamera } from '@react-three/drei';
 import { Bloom, EffectComposer } from '@react-three/postprocessing';
 import HandSkeleton from './HandSkeleton';
+import InteractiveHologram from './InteractiveHologram';
 
 const HologramScene = ({ handsData, gesture, userName, gender }) => {
     return (
@@ -16,6 +17,10 @@ const HologramScene = ({ handsData, gesture, userName, gender }) => {
             <pointLight position={[-10, -10, -10]} intensity={1.5} color="#ff00ff" />
 
             <Suspense fallback={null}>
+                <InteractiveHologram
+                    handsData={handsData}
+                    gesture={gesture}
+                />
                 <HandSkeleton
                     handsData={handsData}
                     gesture={gesture}

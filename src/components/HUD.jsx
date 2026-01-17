@@ -24,21 +24,23 @@ const HUD = ({ landmarks, activeGesture }) => {
     }, [isTracking]);
 
     const stickers = [
-        { g: 'OPEN', t: 'Sphere (Shar)', icon: '✋', c: '#00f2ff' },
-        { g: 'FIST', t: 'Cube (Kub)', icon: '✊', c: '#ff4400' },
-        { g: 'PEACE', t: 'Pyramid (Piramida)', icon: '✌️', c: '#00ff44' },
-        { g: 'POINTING', t: 'Beam (Nur)', icon: '☝️', c: '#ff00ff' },
-        { g: 'HEART', t: 'Heart (Yurak)', icon: '❤️', c: '#ff66aa' }
+        { g: '0', t: 'Sphere (Shar)', icon: '0️⃣', c: '#00f2ff' },
+        { g: '1', t: 'Cube (Kub)', icon: '1️⃣', c: '#ff4400' },
+        { g: '2', t: 'Torus (Aylana)', icon: '2️⃣', c: '#00ff44' },
+        { g: '3', t: 'Octahedron (Oktaedr)', icon: '3️⃣', c: '#ff00ff' },
+        { g: '4', t: 'Icosahedron (Ikosaedr)', icon: '4️⃣', c: '#ffff00' },
+        { g: '5', t: 'Dodecahedron (Dodekaedr)', icon: '5️⃣', c: '#ff66aa' }
     ];
 
     const gestureLabels = {
-        OPEN: 'SPHERE_STABILIZED',
-        FIST: 'CUBE_POWER_CORE',
-        PEACE: 'PYRAMID_SCANNER',
-        POINTING: 'INDEX_BEAM_LINK',
-        ROCK: 'NEURAL_KNOT',
-        HEART: 'QUANTUM_HEART',
-        NONE: 'SYSTEM_IDLE'
+        '0': 'SPHERE_SHAPE',
+        '1': 'CUBE_SHAPE',
+        '2': 'TORUS_SHAPE',
+        '3': 'OCTAHEDRON_SHAPE',
+        '4': 'ICOSAHEDRON_SHAPE',
+        '5': 'DODECAHEDRON_SHAPE',
+        'PINCH': 'SCALING_ACTIVE',
+        'NONE': 'SYSTEM_IDLE'
     };
 
     return (
@@ -87,8 +89,8 @@ const HUD = ({ landmarks, activeGesture }) => {
                             <div style={{ fontSize: '0.6rem', opacity: 0.7 }}>{s.t}</div>
                         </div>
                     ))}
-                    <div style={{ gridColumn: '1/-1', fontSize: '0.6rem', color: '#00f2ff', textAlign: 'center', opacity: 0.6, marginTop: '5px' }}>
-                        * MOVE HAND TO ROTATE • SPREAD FINGERS TO SCALE
+                    <div style={{ gridColumn: '1/-1', fontSize: '0.6rem', color: '#00f2ff', textAlign: 'center', opacity: 0.8, marginTop: '5px' }}>
+                        * CHAP/O'NG - RANG • YUQORI/PAST - AYLANISH • QISISH - KATTALASHTIRISH
                     </div>
                 </div>
             )}
